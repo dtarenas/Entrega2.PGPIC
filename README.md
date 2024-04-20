@@ -7,10 +7,10 @@
 - Diana Milena García Galarza.
 
 ######Diagrama de base de datos resultante
-![image](https://dev.azure.com/diegoarenast/d7a87b71-d240-41bf-b915-6cffdcf4c3b9/_apis/wit/attachments/d2bd048a-a9ac-4e56-92aa-9e20a0c80ef8?fileName=image.png)
+![image](https://github.com/dtarenas/Entrega2.PGPIC/assets/42014718/f9b984a3-9089-4b4d-a22a-60caa85a0c2b)
 
 ######Vista preliminar del swagger con todos los métodos disponibles
-![image](https://dev.azure.com/diegoarenast/d7a87b71-d240-41bf-b915-6cffdcf4c3b9/_apis/wit/attachments/320efd51-412f-4b5d-8081-7d41fdfa229b?fileName=2024-04-12%2020-59-27.gif)
+![image](https://github.com/dtarenas/Entrega2.PGPIC/assets/42014718/9df1c456-8436-424b-a6cf-4649ce9ea1f5)
 
 ###Tener en cuenta
 
