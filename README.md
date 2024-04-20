@@ -6,10 +6,10 @@
 - Diego Alejandro Arenas Tangarife.
 - Diana Milena García Galarza.
 
-######Diagrama de base de datos resultante
+#####Diagrama de base de datos resultante
 ![image](https://github.com/dtarenas/Entrega2.PGPIC/assets/42014718/f9b984a3-9089-4b4d-a22a-60caa85a0c2b)
 
-######Vista preliminar del swagger con todos los métodos disponibles
+#####Vista preliminar del swagger con todos los métodos disponibles
 ![image](https://github.com/dtarenas/Entrega2.PGPIC/assets/42014718/9df1c456-8436-424b-a6cf-4649ce9ea1f5)
 
 ###Tener en cuenta
