@@ -1,0 +1,6 @@
+@Entrega2.PGPIC.API_HostAddress = http://localhost:5216
+
+GET {{Entrega2.PGPIC.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
