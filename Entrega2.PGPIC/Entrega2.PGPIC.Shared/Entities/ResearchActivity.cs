@@ -8,13 +8,13 @@ namespace Entrega2.PGPIC.Shared.Entities
         public int Id { get; set; }
 
         [Display(Name = "Nombre Invstigación")]
-        [Required(ErrorMessage = "Campo {1} requerido")]
-        [MaxLength(50, ErrorMessage = "{1} no puede superar {2} caracteres")]
+        [Required(ErrorMessage = "Campo {0} requerido")]
+        [MaxLength(50, ErrorMessage = "{0} no puede superar {1} caracteres")]
         public string Name { get; set; }
 
         [Display(Name = "Descripción")]
-        [Required(ErrorMessage = "Campo {1} requerido")]
-        [MaxLength(500, ErrorMessage = "{1} no puede superar {2} caracteres")]
+        [Required(ErrorMessage = "Campo {0} requerido")]
+        [MaxLength(500, ErrorMessage = "{0} no puede superar {1} caracteres")]
         public string Description { get; set; }
 
         [Display(Name = "Fecha de inicio")]

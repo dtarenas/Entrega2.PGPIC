@@ -1,0 +1,112 @@
+﻿@inject SweetAlertService swal
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3 form-group">
+        <div class="row">
+            <div class="col-12">
+                <div>
+                    <label>Name:</label>
+                    <InputText class="form-control" width="10" @bind-Value="@ResearchProject.Name"></InputText>
+                    <ValidationMessage For="@(() => ResearchProject.Name)" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3 form-group">
+        <div class="row">
+            <div class="col-12">
+                <label>Description:</label>
+                <div>
+                    <InputTextArea class="form-control" width="10" @bind-Value="@ResearchProject.Description"></InputTextArea>
+                    <ValidationMessage For="@(() => ResearchProject.Description)" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3 form-group">
+        <div class="row">
+            <div class="col-6">
+                <label>Start Date:</label>
+                <div>
+                    <InputDate class="form-control" width="10" @bind-Value="ResearchProject.StartDate"></InputDate>
+                    <ValidationMessage For="@(() => ResearchProject.StartDate)" />
+                </div>
+            </div>
+            <div class="col-6">
+                <label>Estimated End Date:</label>
+                <div>
+                    <InputDate class="form-control" width="10" @bind-Value="ResearchProject.EstimatedEndDate"></InputDate>
+                    <ValidationMessage For="@(() => ResearchProject.EstimatedEndDate)" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit"><i class="bi bi-floppy" />Save Changes</button>
+        <button class="btn btn-outline-info" type="reset"><i class="bi bi-x-circle" />Clean Form</button>
+        <button class="btn btn-outline-success" type="button" @onclick="ReturnAction"><i class="bi bi-arrow-left" />Go Back</button>
+    </div>
+
+</EditForm>
+
+@code {
+    private EditContext editContext = null!;
+    protected override void OnInitialized()
+    {
+        editContext = new(ResearchProject);
+    }
+
+    [Parameter]
+    [EditorRequired]
+    public ResearchProject ResearchProject { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback OnValidSubmit { get; set; }
+
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+    public bool FormularioPosteadoConExito { get; set; } = false;
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        var formularioFueEditado = editContext.IsModified();
+
+        if (!formularioFueEditado)
+        {
+            return;
+        }
+
+        if (FormularioPosteadoConExito)
+        {
+            return;
+        }
+
+        var resultado = await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmation",
+                Text = "Are you sure to leave the page and lose your changes?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
+            });
+
+        var confirmado = !string.IsNullOrEmpty(resultado.Value);
+
+        if (confirmado)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
+    }
+}

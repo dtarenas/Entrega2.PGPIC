@@ -1,0 +1,77 @@
+﻿@page "/researchprojects/edit/{Id:int}"
+@using System.Net
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+
+
+<div class="text-center">
+    <h2>Research Project</h2>
+</div>
+<hr />
+<h3>Edit</h3>
+
+@if (researchProject is null)
+{
+    <Loader></Loader>
+}
+else
+{
+    <ResearchProjectForm @ref="researchProjectForm" ResearchProject="researchProject" OnValidSubmit="Editar" ReturnAction="Return" />
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private ResearchProject researchProject;
+    private ResearchProjectForm researchProjectForm;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var responseHttp = await repository.GetAsync<ResearchProject>($"api/ResearchProjects/{Id}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/ResearchProjects");
+            }
+            else
+            {
+                var messsage = await responseHttp.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", messsage, SweetAlertIcon.Error);
+            }
+        }
+        else
+        {
+            researchProject = responseHttp.Response;
+        }
+    }
+
+
+    private async Task Editar()
+    {
+        var responseHttp = await repository.PutAsync("/api/ResearchProjects", researchProject);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+             await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+
+        Return();
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.TopRight,
+                ShowConfirmButton = false,
+                Timer = 5000
+            });
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Changes have been successfully stored");
+    }
+
+    private void Return()
+    {
+        researchProjectForm!.FormularioPosteadoConExito = true;
+        navigationManager.NavigateTo("/researchprojects");
+    }
+}

@@ -1,0 +1,46 @@
+﻿@page "/researchproject/create"
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+
+<div class="text-center">
+    <h2>Research Project</h2>
+</div>
+<hr />
+<h3 >Create</h3>
+
+<ResearchProjectForm @ref="researchProjectForm" ResearchProject="researchProject" OnValidSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private ResearchProject researchProject = new ResearchProject();
+    private ResearchProjectForm researchProjectForm;
+
+    private async Task Create()
+    {
+        var responseHttp = await repository.PostAsync("/api/researchprojects", researchProject);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+
+        Return();
+
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.TopRight,
+                ShowConfirmButton = false,
+                Timer = 5000
+            });
+
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "The record has been successfully created");
+    }
+
+    private void Return()
+    {
+        researchProjectForm!.FormularioPosteadoConExito = true;
+        navigationManager.NavigateTo("/researchProjects");
+    }
+}

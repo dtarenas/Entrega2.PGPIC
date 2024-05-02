@@ -33,7 +33,12 @@ namespace Entrega2.PGPIC.API
 
 
             app.MapControllers();
-
+            app.UseCors(x => x
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .AllowCredentials()
+               .SetIsOriginAllowed(origin => true)
+           );
             app.Run();
         }
     }
