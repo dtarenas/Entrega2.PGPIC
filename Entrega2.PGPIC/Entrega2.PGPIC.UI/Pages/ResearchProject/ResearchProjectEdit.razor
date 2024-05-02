@@ -50,6 +50,7 @@ else
 
     private async Task Editar()
     {
+        var loading = sweetAlertService.FireAsync(new SweetAlertOptions() { Title = "Processing", Text = "Please wait" , HeightAuto = true, Html = @"<div class=""spinner-border text-warning"" role=""status""></div>", Backdrop = true, ShowConfirmButton = false });
         var responseHttp = await repository.PutAsync("/api/ResearchProjects", researchProject);
         if (responseHttp.Error)
         {

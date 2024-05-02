@@ -97,6 +97,7 @@
             return;
         }
 
+        var loading = sweetAlertService.FireAsync(new SweetAlertOptions() { Title = "Processing", Text = "Please wait", HeightAuto = true, Html = @"<div class=""spinner-border text-warning"" role=""status""></div>", Backdrop = true, ShowConfirmButton = false });
         var responseHttp = await repository.DeleteAsync<ResearchProject>($"api/researchprojects/{researchProject.Id}");
         if (responseHttp.Error)
         {
@@ -112,7 +113,6 @@
             return;
         }
 
-        await LoadAsync();
         var toast = sweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
@@ -120,6 +120,8 @@
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "The record has been successfully deleted");
+
+        toast.FireAsync(icon: SweetAlertIcon.Success, message: "The record has been successfully deleted");
+        await LoadAsync();
     }
 }

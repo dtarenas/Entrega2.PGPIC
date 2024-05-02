@@ -25,7 +25,7 @@ namespace Entrega2.PGPIC.UI.Repositories
             var statusCode = HttpResponseMessage.StatusCode;
             if (statusCode == HttpStatusCode.NotFound)
             {
-                return "Recurso no encontrado.";
+                return "Resource is not found.";
             }
             if (statusCode == HttpStatusCode.BadRequest)
             {
@@ -33,14 +33,14 @@ namespace Entrega2.PGPIC.UI.Repositories
             }
             if (statusCode == HttpStatusCode.Unauthorized)
             {
-                return "Tienes que estar logueado para ejecutar esta operación.";
+                return "You are not authorized.";
             }
             if (statusCode == HttpStatusCode.Forbidden)
             {
-                return "No tienes permisos para hacer esta operación.";
+                return "You don't have permissions.";
             }
 
-            return "Ha ocurrido un error inesperado.";
+            return "Unexpected error has occurred.";
         }
     }
 }

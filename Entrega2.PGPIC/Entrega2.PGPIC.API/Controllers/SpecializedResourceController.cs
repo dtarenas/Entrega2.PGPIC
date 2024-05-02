@@ -27,6 +27,11 @@ namespace Entrega2.PGPIC.API.Controllers
         [HttpPost]
         public async Task<ActionResult> Post(SpecializedResource specializedResource)
         {
+            if (await _context.SpecializedResources.AnyAsync(x => x.Name.ToUpper() == specializedResource.Name.ToUpper()))
+            {
+                return BadRequest($"Specialized Resource with name: {specializedResource.Name} already exists");
+            }
+
             _context.SpecializedResources.Add(specializedResource);
             await _context.SaveChangesAsync();
             return Ok();
@@ -50,6 +55,10 @@ namespace Entrega2.PGPIC.API.Controllers
         [HttpPut]
         public async Task<ActionResult> Put(SpecializedResource specializedResource)
         {
+            if (!await _context.SpecializedResources.AnyAsync(x => x.Id == specializedResource.Id))
+            {
+                return NotFound();
+            }
             _context.SpecializedResources.Update(specializedResource);
             await _context.SaveChangesAsync();
             return Ok(specializedResource);

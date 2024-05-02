@@ -7,7 +7,7 @@
     <h2>Research Project</h2>
 </div>
 <hr />
-<h3 >Create</h3>
+<h3>Create</h3>
 
 <ResearchProjectForm @ref="researchProjectForm" ResearchProject="researchProject" OnValidSubmit="Create" ReturnAction="Return" />
 
@@ -17,6 +17,7 @@
 
     private async Task Create()
     {
+        var loading = sweetAlertService.FireAsync(new SweetAlertOptions() { Title = "Processing", Text = "Please wait", HeightAuto = true, Html = @"<div class=""spinner-border text-warning"" role=""status""></div>", Backdrop = true, ShowConfirmButton = false });
         var responseHttp = await repository.PostAsync("/api/researchprojects", researchProject);
         if (responseHttp.Error)
         {

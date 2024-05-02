@@ -27,6 +27,11 @@ namespace Entrega2.PGPIC.API.Controllers
         [HttpPost]
         public async Task<ActionResult> Post(Researcher researcher)
         {
+            if (await _context.Researchers.AnyAsync(x => x.Name.ToUpper() == researcher.Name.ToUpper()))
+            {
+                return BadRequest($"Researcher with name: {researcher.Name} already exists");
+            }
+
             _context.Researchers.Add(researcher);
             await _context.SaveChangesAsync();
             return Ok();
@@ -50,6 +55,11 @@ namespace Entrega2.PGPIC.API.Controllers
         [HttpPut]
         public async Task<ActionResult> Put(Researcher researcher)
         {
+            if (!await _context.Researchers.AnyAsync(x => x.Id == researcher.Id))
+            {
+                return NotFound();
+            }
+
             _context.Researchers.Update(researcher);
             await _context.SaveChangesAsync();
             return Ok(researcher);
