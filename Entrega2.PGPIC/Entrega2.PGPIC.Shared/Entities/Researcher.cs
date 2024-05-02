@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Entrega2.PGPIC.Shared.Entities
 {
@@ -20,8 +21,8 @@ namespace Entrega2.PGPIC.Shared.Entities
         [Required(ErrorMessage = "Campo {1} requerido")]
         [MaxLength(100, ErrorMessage = "{1} no puede superar {2} caracteres")]
         public string Afiliation { get; set; }
-
+        
+        [JsonIgnore]
         public ICollection<ResearchProject> Projects { get; set; }
-
     }
 }

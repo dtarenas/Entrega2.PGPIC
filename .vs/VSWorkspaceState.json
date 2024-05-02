@@ -1,11 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\PlataformaGestionProyectosInvestigacion",
-    "\\PlataformaGestionProyectosInvestigacion\\Entrega2.PGPIC",
-    "\\PlataformaGestionProyectosInvestigacion\\Entrega2.PGPIC\\Entrega2.PGPIC.Shared",
-    "\\PlataformaGestionProyectosInvestigacion\\Entrega2.PGPIC\\Entrega2.PGPIC.Shared\\Entities"
+    "\\Entrega2.PGPIC",
+    "\\Entrega2.PGPIC\\Entrega2.PGPIC.Shared",
+    "\\Entrega2.PGPIC\\Entrega2.PGPIC.Shared\\Entities"
   ],
-  "SelectedNode": "\\PlataformaGestionProyectosInvestigacion\\Entrega2.PGPIC\\Entrega2.PGPIC.Shared\\Entities\\Publication.cs",
+  "SelectedNode": "\\Entrega2.PGPIC\\Entrega2.PGPIC.Shared\\Entities\\Publication.cs",
   "PreviewInSolutionExplorer": false
 }

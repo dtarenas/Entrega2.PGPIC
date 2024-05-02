@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Entrega2.PGPIC.Shared.Entities
 {
@@ -25,9 +26,16 @@ namespace Entrega2.PGPIC.Shared.Entities
         [DisplayFormat(DataFormatString = "{0}:yyyy/MM/dd HH:mm", ApplyFormatInEditMode = true)]
         public DateTime EstimatedEndDate { get; set; }
 
+        [JsonIgnore]
         public ICollection<Researcher> Researchers { get; set; }
+        
+        [JsonIgnore]
         public ICollection<ResearchActivity> Activities { get; set; }
+
+        [JsonIgnore]
         public ICollection<Publication> Publications { get; set; }
+        
+        [JsonIgnore]
         public ICollection<SpecializedResource> Resources { get; set; }
     }
 }
