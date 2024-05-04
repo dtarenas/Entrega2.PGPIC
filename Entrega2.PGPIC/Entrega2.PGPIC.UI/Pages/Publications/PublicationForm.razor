@@ -1,0 +1,159 @@
+﻿@inject SweetAlertService swal
+@inject IRepository repository
+@inject NavigationManager navigationManager
+
+<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="mb-3 form-group">
+        <div class="row">
+            <div class="col-12">
+                <div>
+                    <label>Title:</label>
+                    <InputText class="form-control" width="10" @bind-Value="@Publication.Title"></InputText>
+                    <ValidationMessage For="@(() => Publication.Title)" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3 form-group">
+        <div class="row">
+            <div class="col-12">
+                <label>Author:</label>
+                <div>
+                    <InputText class="form-control" width="10" @bind-Value="@Publication.Author"></InputText>
+                    <ValidationMessage For="@(() => Publication.Author)" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3 form-group">
+        <div class="row">
+            <div class="col-6">
+                <label>Publication Date:</label>
+                <div>
+                    <InputDate class="form-control" width="10" @bind-Value="Publication.PublicationDate"></InputDate>
+                    <ValidationMessage For="@(() => Publication.PublicationDate)" />
+                </div>
+            </div>
+            <div class="col-6">
+                <label>Project:</label>
+                <div>
+                    @if (ResearchProjects is null)
+                    {
+                        <Loader Size="xs"></Loader>
+                    }
+                    else
+                    {
+                        <InputSelect class="form-select" width="10" @bind-Value="Publication.ProjectId">
+                            @foreach (var prj in ResearchProjects)
+                            {
+                                if (Publication.ProjectId == prj.Id)
+                                {
+                                    <option value="@prj.Id">
+                                        @prj.Name
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@prj.Id" selected>@prj.Name</option>
+                                }
+                            }
+                        </InputSelect>
+                    }
+                    <ValidationMessage For="@(() => Publication.ProjectId)" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit"> <span class="bi bi-floppy" aria-hidden="true"></span> Save Changes</button>
+        <button class="btn btn-outline-info" type="reset"><span class="bi bi-x-circle"></span> Clean Form</button>
+        <button class="btn btn-outline-success" type="button" @onclick="ReturnAction"><span class="bi bi-arrow-left"></span> Go Back</button>
+    </div>
+
+</EditForm>
+
+@code {
+    private EditContext editContext = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        editContext = new(Publication);
+        await LoadResearchProjectsAsync();
+    }
+
+    private async Task LoadResearchProjectsAsync()
+    {
+        var responseHttp = await repository.GetAsync<List<ResearchProject>>("/api/researchprojects");
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await swal.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        ResearchProjects = responseHttp.Response;
+
+        if (!ResearchProjects.Any())
+        {
+            await swal.FireAsync("Information", "No Research Projects existing", SweetAlertIcon.Info);
+            navigationManager.NavigateTo("/publications");
+        }
+
+    }
+
+    [Parameter]
+    [EditorRequired]
+    public Publication Publication { get; set; } = null!;
+
+    public List<ResearchProject> ResearchProjects { get; set; } = new List<ResearchProject>();
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback OnValidSubmit { get; set; }
+
+
+    [EditorRequired]
+    [Parameter]
+    public EventCallback ReturnAction { get; set; }
+
+    public bool FormularioPosteadoConExito { get; set; } = false;
+
+    private async Task OnBeforeInternalNavigation(LocationChangingContext context)
+    {
+        var formularioFueEditado = editContext.IsModified();
+
+        if (!formularioFueEditado)
+        {
+            return;
+        }
+
+        if (FormularioPosteadoConExito)
+        {
+            return;
+        }
+
+        var resultado = await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmation",
+                Text = "Are you sure to leave the page and lose your changes?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true
+            });
+
+        var confirmado = !string.IsNullOrEmpty(resultado.Value);
+
+        if (confirmado)
+        {
+            return;
+        }
+
+        context.PreventNavigation();
+    }
+}

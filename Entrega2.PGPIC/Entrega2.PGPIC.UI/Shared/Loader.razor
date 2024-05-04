@@ -1,8 +1,25 @@
 ﻿<div class="text-center">
     <div class="col-12">
-        <div class="spinner-border text-warning" role="status" style="width: 25rem; height: 25rem;"></div>
+        @switch (Size)
+        {
+            case "lg":
+                <div class="spinner-border text-warning" role="status" style="width: 25rem; height: 25rem;"></div>
+                break;
+            case "xs":
+                <div class="spinner-border text-warning" role="status"></div>
+                break;
+            default:
+                <div class="spinner-border text-warning" role="status" style="width: 5rem; height: 5rem;"></div>
+                break;
+
+        }
     </div>
     <div class="row">
         <span class="text-center text-dark h5">Loading...</span>
     </div>
 </div>
+
+@code {
+    [Parameter]
+    public string Size { get; set; } = "sm";
+}

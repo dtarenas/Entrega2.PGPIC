@@ -20,7 +20,7 @@ namespace Entrega2.PGPIC.API.Controllers
         [HttpGet]
         public async Task<ActionResult> Get()
         {
-            return Ok(await _context.Publications.ToListAsync());
+            return Ok(await _context.Publications.Include(x => x.Project).ToListAsync());
         }
 
         //Metodo post' Guardar registros

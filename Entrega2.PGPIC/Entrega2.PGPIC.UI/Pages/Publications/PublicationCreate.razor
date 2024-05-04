@@ -1,0 +1,47 @@
+﻿@page "/publications/create"
+@inject NavigationManager navigationManager
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+
+<div class="text-center">
+    <h2>Publications</h2>
+</div>
+<hr />
+<h3>Create</h3>
+
+<PublicationForm @ref="publicationForm" Publication="publication" OnValidSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private Publication publication = new Publication();
+    private PublicationForm publicationForm;
+
+    private async Task Create()
+    {
+        var loading = sweetAlertService.FireAsync(new SweetAlertOptions() { Title = "Processing", Text = "Please wait", HeightAuto = true, Html = @"<div class=""spinner-border text-warning"" role=""status""></div>", Backdrop = true, ShowConfirmButton = false });
+        var responseHttp = await repository.PostAsync("/api/publications", publication);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+
+        Return();
+
+        var toast = sweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.TopRight,
+                ShowConfirmButton = false,
+                Timer = 5000
+            });
+
+        await toast.FireAsync(icon: SweetAlertIcon.Success, message: "The record has been successfully created");
+    }
+
+    private void Return()
+    {
+        publicationForm!.FormularioPosteadoConExito = true;
+        navigationManager.NavigateTo("/publications");
+    }
+}

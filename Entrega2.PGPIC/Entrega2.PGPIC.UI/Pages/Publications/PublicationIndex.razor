@@ -1,4 +1,4 @@
-﻿@page "/researchprojects"
+﻿@page "/publications"
 
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
@@ -7,49 +7,49 @@
 <div class="card mt-2">
     <div class="card-header">
         <span>
-            <span class="bi bi-gear" ></span> <b class="h3">Research Projects</b>
-            <a class="btn btn-primary btn-sm float-end" href="/researchproject/create"><i class="bi bi-plus-circle" /> New Research Project</a>
+            <span class="bi bi-gear" ></span> <b class="h3">Publications</b>
+            <a class="btn btn-primary btn-sm float-end" href="/publications/create"><span class="bi bi-plus-circle" ></span> New Publication</a>
         </span>
     </div>
     <div class="card-body">
-        <GenericList MyList="ResearchProjects">
+        <GenericList MyList="Publications">
             <Body>
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>
-                                Name
+                                Title
                             </th>
                             <th>
-                                Description
+                                Author
                             </th>
                             <th>
-                                Start Date
+                                Publication Date
                             </th>
                             <th>
-                                Estimated End Date
+                                Project
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in ResearchProjects!)
+                        @foreach (var item in Publications!)
                         {
                             <tr>
                                 <td>
-                                    @item.Name
+                                    @item.Title
                                 </td>
                                 <td>
-                                    @item.Description
+                                    @item.Author
                                 </td>
                                 <td>
-                                    @item.StartDate
+                                    @item.PublicationDate.ToShortDateString()
                                 </td>
                                 <td>
-                                    @item.EstimatedEndDate.ToShortDateString()
+                                    @item.Project?.Name
                                 </td>
                                 <td>
-                                    <a href="/researchprojects/edit/@item.Id" class="btn btn-sm btn-warning"><span class="bi bi-pencil-square"></span> Editar</a>
-                                    <button @onclick=@(() => DeleteAsync(item)) class="btn btn-sm btn-danger"><span class="bi bi-trash-fill"></span>  Borrar</button>
+                                    <a href="/publications/edit/@item.Id" class="btn btn-sm btn-warning"><span class="bi bi-pencil-square" ></span> Editar</a>
+                                    <button @onclick=@(() => DeleteAsync(item)) class="btn btn-sm btn-danger"><span class="bi bi-trash-fill" ></span> Borrar</button>
                                 </td>
 
                             </tr>
@@ -63,7 +63,7 @@
 
 
 @code {
-    public List<ResearchProject> ResearchProjects { get; set; }
+    public List<Publication> Publications { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -72,25 +72,26 @@
 
     private async Task LoadAsync()
     {
-        var responseHttp = await repository.GetAsync<List<ResearchProject>>("/api/researchprojects");
+        var responseHttp = await repository.GetAsync<List<Publication>>("/api/publications");
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
-        ResearchProjects = responseHttp.Response;
+        Publications = responseHttp.Response;
     }
 
-    private async Task DeleteAsync(ResearchProject researchProject)
+    private async Task DeleteAsync(Publication publication)
     {
         var result = await sweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confrimation",
-                Text = $"Are you sure to delete the Research Project: {researchProject.Name}?",
+                Text = $"Are you sure to delete the Publication: {publication.Title}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
             });
+
         var confirm = string.IsNullOrEmpty(result.Value);
         if (confirm)
         {
@@ -98,12 +99,12 @@
         }
 
         var loading = sweetAlertService.FireAsync(new SweetAlertOptions() { Title = "Processing", Text = "Please wait", HeightAuto = true, Html = @"<div class=""spinner-border text-warning"" role=""status""></div>", Backdrop = true, ShowConfirmButton = false });
-        var responseHttp = await repository.DeleteAsync<ResearchProject>($"api/researchprojects/{researchProject.Id}");
+        var responseHttp = await repository.DeleteAsync<Publication>($"api/publications/{publication.Id}");
         if (responseHttp.Error)
         {
             if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                navigationManager.NavigateTo("/researchprojects");
+                navigationManager.NavigateTo("/publications");
             }
             else
             {
