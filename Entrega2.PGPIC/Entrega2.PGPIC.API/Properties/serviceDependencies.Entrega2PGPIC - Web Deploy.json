@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/entrega2pgpicapidbserver/databases/Entrega2PGPICAPI_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:PGPICConnection",
+      "dynamicId": null
+    }
+  }
+}
