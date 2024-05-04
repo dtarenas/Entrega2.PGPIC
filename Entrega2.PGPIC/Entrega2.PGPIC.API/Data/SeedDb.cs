@@ -20,6 +20,7 @@ namespace Entrega2.PGPIC.API.Data
         {
             await _context.Database.EnsureCreatedAsync();
             await CheckResearchersAsync();
+            await CheckResearcherProjectAsync();
             await CheckRolesAsync();
             await CheckUserAsync("12345678", "Admin", "Admin", "admin@gmail.com", "321654987", "Cr 125 6548", UserType.Admin);
         }
@@ -59,7 +60,7 @@ namespace Entrega2.PGPIC.API.Data
             if (!_context.Researchers.Any())
             {
                 var researchers = GetDefaultResearcher();
-                _context.AddRange(researchers);
+                _context.Researchers.AddRange(researchers);
             }
 
             await _context.SaveChangesAsync();
@@ -78,6 +79,32 @@ namespace Entrega2.PGPIC.API.Data
             ];
 
             return researchers;
+        }
+
+
+        private async Task CheckResearcherProjectAsync()
+        {
+            if (!_context.ResearchProjects.Any())
+            {
+                var researchers = GetDefaultResearchProjects();
+                _context.ResearchProjects.AddRange(researchers);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        private static List<ResearchProject> GetDefaultResearchProjects()
+        {
+            var projects = new List<ResearchProject>
+            {
+                new() { Name = "Project 1", Description = "Description for Project 1" },
+                new() { Name = "Project 2", Description = "Description for Project 2" },
+                new() { Name = "Project 3", Description = "Description for Project 3" },
+                new() { Name = "Project 4", Description = "Description for Project 4" },
+                new() { Name = "Project 5", Description = "Description for Project 5" }
+            };
+
+            return projects;
         }
     }
 }
