@@ -20,7 +20,7 @@ steps:
     packageType: 'sdk'
     version: '8.0.204'
     includePreviewVersions: true
-- script: dotnet build --configuration $(buildConfiguration) Entrega2.PGPIC.API
+- script: dotnet build --configuration $(buildConfiguration) Entrega2.PGPIC/Entrega2.PGPIC.API.csproj
   displayName: 'dotnet build $(buildConfiguration)'
 - task: CmdLine@2
   displayName: 'Installing EF Core CLI'
