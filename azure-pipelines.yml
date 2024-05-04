@@ -12,7 +12,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  proyecto: Entrega2.PGPIC/Entrega2.PGPIC.API.csproj
+  proyecto: Entrega2.PGPIC.API/Entrega2.PGPIC.API.csproj
 steps:
 - task: UseDotNet@2
   displayName: 'ASP.NET Core 8'
@@ -20,12 +20,12 @@ steps:
     packageType: 'sdk'
     version: '8.0.204'
     includePreviewVersions: true
-- script: dotnet build --configuration $(buildConfiguration) Entrega2.PGPIC/Entrega2.PGPIC.API.csproj
+- script: dotnet build --configuration $(buildConfiguration) Entrega2.PGPIC.API/Entrega2.PGPIC.API.csproj
   displayName: 'dotnet build $(buildConfiguration)'
 - task: CmdLine@2
   displayName: 'Installing EF Core CLI'
   inputs:
-    script: 'dotnet tool install --global dotnet-ef --version 7.*'
+    script: 'dotnet tool install --global dotnet-ef --version 8.*'
 - task: CmdLine@2
   displayName: 'Generating DB script'
   inputs:
