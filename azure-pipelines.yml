@@ -12,7 +12,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  proyecto: Entrega2.PGPIC.API.csproj
+  proyecto: Entrega2.PGPIC/Entrega2.PGPIC.API.csproj
 steps:
 - task: UseDotNet@2
   displayName: 'ASP.NET Core 8'
